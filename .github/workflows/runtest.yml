@@ -1,17 +1,25 @@
-name: Receive Trigger Event
+name: Auto Sync from Source Repo
 
 on:
   repository_dispatch:
     types: [trigger-event]
 
 jobs:
-  build:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Print payload
+      - name: Set up Git
         run: |
-          echo "Received repository dispatch event with payload:"
-          echo "${{ toJson(github.event.client_payload) }}"
+          git config user.name "RichardDavidKaavalan"
+          git config user.email "richard.david@kaavalan.org"
+
+      - name: Pull changes from source repo
+        run: |
+          git pull https://github.com/RichardDavidKaavalan/CICD-TEST.git dev
+
+      - name: Push changes to origin
+        run: |
+          git push
