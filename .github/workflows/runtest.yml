@@ -14,9 +14,16 @@ jobs:
           repository: RichardDavidKaavalan/CICD-TEST
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - name: Push to target repository
+      - name: Pull changes from target repo
         run: |
           git remote add target-repo https://github.com/RichardDavidKaavalan/git_test.git
-          git push target-repo HEAD:refs/heads/main  # Modify the branch name as needed
+          git pull target-repo main --ff-only
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: Push to Target Repo
+        run: |
+          git push target-repo HEAD:main
+
+    
+       
