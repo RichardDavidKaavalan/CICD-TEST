@@ -22,7 +22,7 @@ jobs:
 
       - name: Add remote repository
         run: |
-          git remote add target https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/username/git-test.git
+          git remote add target https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/RichardDavidKaavalan/git_test.git
           git fetch target
 
       - name: Push changes to target repository
