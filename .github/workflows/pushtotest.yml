@@ -17,9 +17,9 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name "RichardDavidKaavalan"
-          git config --global user.email "richard.david@kaavalan.org"
-
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
       - name: Add remote repository
         run: |
           git remote add target https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/RichardDavidKaavalan/git_test.git
