@@ -1,17 +1,17 @@
-name: run the test
+name: Receive Trigger Event
+
 on:
   repository_dispatch:
-    types: [my-event]
+    types: [trigger-event]
+
 jobs:
   build:
-    name: rrun-test
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: print trigger details
-        run: 
-          echo ${{ github.event.client_payload.github.action }}
-          echo ${{ github.event.client_payload.github.actor }}
-      
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Print payload
+        run: |
+          echo "Received repository dispatch event with payload:"
+          echo "${{ toJson(github.event.client_payload) }}"
