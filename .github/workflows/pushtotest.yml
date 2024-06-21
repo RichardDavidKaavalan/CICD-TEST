@@ -1,15 +1,18 @@
-name: Sync Dev to Git_Test Main
-on: push
-jobs:
-  trigger_test:
-    runs-on: ubuntu-latest
+name: Trigger Git Test Workflow
 
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  trigger-git-test:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout Dev Branch
-        uses: peter-evans/repository-dispatch@v2
+      - name: Dispatch repository dispatch event
+        uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          repository: RichardDavidKaavalan/git_test
-          event-type: my-event
-          client-payload: '{"github": ${{ toJson(github) }}}'
-          
+          repository: git_test
+          event-type: trigger-event
+          client-payload: '{"branch": "dev"}'
