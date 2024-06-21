@@ -21,7 +21,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Add Remote Repository
-        run: git remote add git_test https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/RichardDavidKaavalan/git_test.git
+        run: git remote add git_test https://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@github.com/RichardDavidKaavalan/git_test.git
 
       - name: Push to Git_Test Main Branch
         run: |
