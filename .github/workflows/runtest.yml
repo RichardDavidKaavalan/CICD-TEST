@@ -20,6 +20,11 @@ jobs:
         run: |
           git pull https://github.com/RichardDavidKaavalan/CICD-TEST.git dev
 
+      - name: Reset local dev branch to match source repo
+        run: |
+          git checkout dev
+          git reset --hard FETCH_HEAD
+
       - name: Push changes to origin
         run: |
-          git push
+          git push origin main
