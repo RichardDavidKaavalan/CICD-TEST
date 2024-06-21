@@ -1,4 +1,4 @@
-name: Sync to Git-Test
+name: Sync Dev to Git_Test Main
 
 on:
   push:
@@ -10,21 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source repository
+      - name: Checkout Dev Branch
         uses: actions/checkout@v2
         with:
           ref: dev
 
-      - name: Set up Git
+      - name: Set Up Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-      - name: Add remote repository
-        run: |
-          git remote add target https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/RichardDavidKaavalan/git_test.git
-          git fetch target
 
-      - name: Push changes to target repository
+      - name: Add Remote Repository
+        run: git remote add git_test https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/RichardDavidKaavalan/git_test.git
+        env:
+          TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+      - name: Push to Git_Test Main Branch
         run: |
-          git push target dev:main
+          git checkout -b temp-branch
+          git push git_test temp-branch:main --force
