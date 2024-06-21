@@ -6,24 +6,15 @@ on:
       - dev
 
 jobs:
-  sync:
+  trigger_test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Dev Branch
-        uses: actions/checkout@v2
+        uses: peter-evans/repository-dispatch@v2
         with:
-          ref: dev
-
-      - name: Set Up Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Add Remote Repository
-        run: git remote add git_test https://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@github.com/RichardDavidKaavalan/git_test.git
-
-      - name: Push to Git_Test Main Branch
-        run: |
-          git checkout -b temp-branch
-          git push git_test temp-branch:main --force
+          token: ${{secrets.PERSONAL_ACCESS_TOKEN}}
+          repositary: RichardDavidKaavalan/git_test
+          event-type: my-event
+          client-payload: '{"github": ${{ toJson(github) }}}'
+          
