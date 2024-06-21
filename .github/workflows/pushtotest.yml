@@ -22,8 +22,6 @@ jobs:
 
       - name: Add Remote Repository
         run: git remote add git_test https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/RichardDavidKaavalan/git_test.git
-        env:
-          TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Push to Git_Test Main Branch
         run: |
