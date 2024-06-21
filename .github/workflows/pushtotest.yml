@@ -1,0 +1,30 @@
+name: Sync to Git-Test
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v2
+        with:
+          ref: dev
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add remote repository
+        run: |
+          git remote add target https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/username/git-test.git
+          git fetch target
+
+      - name: Push changes to target repository
+        run: |
+          git push target dev:main
