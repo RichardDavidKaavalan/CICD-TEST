@@ -14,16 +14,15 @@ jobs:
           repository: RichardDavidKaavalan/CICD-TEST
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - name: Pull changes from target repo
+      - name: Set up Git
+        run: |
+          git config user.name "RichardDavidKaavalan"
+          git config user.email "richard.david@kaavalan.org"
+
+      - name: Force push to Target Repo
         run: |
           git remote add target-repo https://github.com/RichardDavidKaavalan/git_test.git
-          git pull target-repo main --ff-only
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
-      - name: Push to Target Repo
-        run: |
-          git push target-repo HEAD:main
+          git push target-repo HEAD:main --force
 
     
        
