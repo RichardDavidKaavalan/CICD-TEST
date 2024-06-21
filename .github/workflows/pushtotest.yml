@@ -1,5 +1,5 @@
 name: Sync Dev to Git_Test Main
-on: workflow_dispatch
+on: push
 jobs:
   trigger_test:
     runs-on: ubuntu-latest
