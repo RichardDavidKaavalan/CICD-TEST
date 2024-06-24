@@ -2,9 +2,9 @@
 FROM node:alpine3.18 as build
 WORKDIR /app 
 COPY package.json .
-RUN npm install
+RUN yarn install
 COPY . .
-RUN npm run build
+RUN yarn build
 
 # Step 2: Server With Nginx
 FROM nginx:1.23-alpine
