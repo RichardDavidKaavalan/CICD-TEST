@@ -17,7 +17,7 @@ jobs:
           git remote add other_repo https://github.com/RichardDavidKaavalan/git_test.git
           git push other_repo main
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: Dispatch repository dispatch event
         uses: peter-evans/repository-dispatch@v2
         with:
