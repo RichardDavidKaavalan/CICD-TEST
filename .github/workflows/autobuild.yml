@@ -20,7 +20,7 @@ jobs:
 
   deploy: 
     needs: build
-    runs-on: aws-ec2    
+    runs-on: Default    
     steps:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
