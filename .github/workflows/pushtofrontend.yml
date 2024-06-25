@@ -7,6 +7,7 @@ on:
 
 jobs:
   trigger-git-test:
+    if: github.repository == 'RichardDavidKaavalan/CICD-TEST'
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch repository dispatch event
