@@ -18,7 +18,7 @@ jobs:
       - name: Publish image to docker hub
         run: docker push richard1301808/git_cicd:latest   
 
-  deploy: 
+deploy: 
     needs: build
     runs-on: aws-ec2    
     steps:
