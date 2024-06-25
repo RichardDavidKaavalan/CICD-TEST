@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Cyber Check 360 Demo Projexy
+          Cyber Check 360 Demo Project
         </a>
       </header>
     </div>
