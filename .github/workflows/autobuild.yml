@@ -1,8 +1,9 @@
 name: CICD
 
 on:
-  repository_dispatch:
-    types: [trigger-event]
+  push:
+    branches:
+      - test
 
 jobs:
   build:
