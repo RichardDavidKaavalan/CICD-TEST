@@ -13,11 +13,12 @@ jobs:
         with:
           repository: RichardDavidKaavalan/CICD-TEST
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
+      - name: Configure Git for pushing to your repository
+        run: |
+          git remote add new-origin https://github.com/RichardDavidKaavalan/git_test.git
       - name: Push code to your repository
         run: |
-          git push origin main
-
+          git push new-origin main
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
