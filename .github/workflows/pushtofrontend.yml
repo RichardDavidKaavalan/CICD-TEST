@@ -10,12 +10,6 @@ jobs:
     if: github.repository == 'RichardDavidKaavalan/CICD-TEST'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Push to Another Repository
-        run: |
-          git remote add other_repo https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/RichardDavidKaavalan/git_test.git
-          git push other_repo main
       - name: Dispatch repository dispatch event
         uses: peter-evans/repository-dispatch@v2
         with:
