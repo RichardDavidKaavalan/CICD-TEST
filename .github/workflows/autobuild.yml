@@ -13,14 +13,9 @@ jobs:
         with:
           repository: RichardDavidKaavalan/CICD-TEST
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      - name: Checkout target repository
-        uses: actions/checkout@v2
-        with:
-          repository: RichardDavidKaavalan/git-test
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: Copy files from source to target
         run: |
-          cp -r other-repo/. . # Copy all files including hidden ones
+          cp -r CICD-TEST/. . # Copy all files including hidden ones
       - name: Commit and push changes
         run: |
           git add .
