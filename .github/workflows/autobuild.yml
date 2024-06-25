@@ -1,27 +1,32 @@
-name: Node.js CI
+name: CICD
 
 on:
   push:
-    branches: [ "Test" ]
+    branches:
+      - Test
 
 jobs:
   build:
-
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm run build --if-present
-    - name: Clear contents of /var/www/html
-      run: sudo rm -rf /var/www/html/*
-    - name: Copy dist folder to /var/www/html
-      run: sudo cp -r dist/* /var/www/html
+      - name: Checkout Source
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker Image
+        run: docker build -t richard1301808/git_cicd .
+      - name: Publish image to docker hub
+        run: docker push richard1301808/git_cicd:latest   
+
+  deploy: 
+    needs: build
+    runs-on: aws-ec2    
+    steps:
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Pull image from docker hub
+        run: docker pull richard1301808/git_cicd:latest 
+      - name: Delete Old Container
+        run: docker rm -f reactContainer
+      - name: Run docker container
+        run: docker run -d -p 3000:80 --name reactContainer richard1301808/git_cicd  
