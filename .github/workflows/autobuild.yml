@@ -13,12 +13,21 @@ jobs:
         with:
           repository: RichardDavidKaavalan/CICD-TEST
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      - name: Configure Git for pushing to your repository
+      - name: Checkout target repository
+        uses: actions/checkout@v2
+        with:
+          repository: RichardDavidKaavalan/git-test
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: Copy files from source to target
         run: |
-          git remote add new-origin https://github.com/RichardDavidKaavalan/git_test.git
-      - name: Push code to your repository
+          cp -r other-repo/. . # Copy all files including hidden ones
+      - name: Commit and push changes
         run: |
-          git push new-origin main
+          git add .
+          git commit -m "Sync from other-repo"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
