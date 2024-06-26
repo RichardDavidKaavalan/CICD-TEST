@@ -17,7 +17,7 @@ jobs:
     - run: CI=false yarn build
     - name: ssh deploy on aws ec2
       uses: easingthemes/ssh-deploy@v2.1.4
-      env:
+      with:
         SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
         REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
         REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
