@@ -16,14 +16,10 @@ jobs:
     - run: yarn install
     - run: CI=false yarn build
     - name: ssh deploy on aws ec2
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DEPLOY_USERNAME }}
-        key: ${{ secrets.DEPLOY_KEY }}
-        script: |
-          cd ~/home/ubuntu/noDocker
-          yarn install
-          yarn build
-          yarn add serve
-          serve -p 3000 build/
+      uses: easingthemes/ssh-deploy@v2.1.4
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+        REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
+        REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
+        SOURCE: "./"
+        TARGET: ${{ secrets.DEPLOY_TARGET }}
