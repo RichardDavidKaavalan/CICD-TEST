@@ -13,13 +13,14 @@ jobs:
 
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: Deploy to my EC2 instance
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
           SOURCE: "./"
+          REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
           TARGET: ${{ secrets.DEPLOY_TARGET }}
