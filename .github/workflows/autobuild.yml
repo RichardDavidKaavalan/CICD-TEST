@@ -2,31 +2,25 @@ name: CICD
 
 on:
   push:
-    branches:
-      - Test
-
+    branches: [ NoDocker ]
+ 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source
-        uses: actions/checkout@v3
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build Docker Image
-        run: docker build -t richard1301808/git_cicd .
-      - name: Publish image to docker hub
-        run: docker push richard1301808/git_cicd:latest   
-
-  deploy: 
-    needs: build
-    runs-on: aws-ec2    
-    steps:
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - name: Pull image from docker hub
-        run: docker pull richard1301808/git_cicd:latest 
-      - name: Delete Old Container
-        run: docker rm -f reactContainer
-      - name: Run docker container
-        run: docker run -d -p 3000:80 --name reactContainer richard1301808/git_cicd  
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x to Build
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+    - run: yarn install
+    - run: CI=false yarn build
+    - name: ssh deploy on aws ec2
+      uses: easingthemes/ssh-deploy@v2.1.4
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+        REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
+        REMOTE_USER: ${{ secrets.DEPLOY_USER }}
+        REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
+        SOURCE: "build/"
+        TARGET: ${{ secrets.DEPLOY_TARGET }}
