@@ -1,25 +1,46 @@
-name: CICD
+name: Push-to-EC2 instance
 
+# Trigger deployment only on push to main branch 
 on:
   push:
-    branches: [ NoDocker ]
- 
+    branches:
+      - NoDocker
+
 jobs:
-  build-and-deploy:
+  deploy:
+    name: Push to EC2
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 16.x to Build
-      uses: actions/setup-node@v2
-      with:
-        node-version: 16.x
-    - run: yarn install
-    - run: CI=false yarn build
-    - name: ssh deploy on aws ec2
-      uses: easingthemes/ssh-deploy@v2.1.4
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
-        REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
-        REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
-        SOURCE: "./"
-        TARGET: ${{ secrets.DEPLOY_TARGET }}
+      - name: Checkout the code
+        uses: actions/checkout@v1
+
+      - name: Deploy to my EC2 instance
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
+          REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
+          TARGET: ${{ secrets.DEPLOY_TARGET }}
+
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            sudo yum -y update
+            sudo yum install -y httpd
+            sudo systemctl start httpd
+            sudo systemctl enable httpd
+            cd /home
+            ls
+            cd /ubuntu/noDocker
+            sudo yum install nodejs npm -y
+            yarn install
+            sudo yarn build
+            cd build
+            sudo mv * /var/www/html
+            sudo systemctl restart httpd
