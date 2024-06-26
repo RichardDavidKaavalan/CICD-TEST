@@ -18,9 +18,9 @@ jobs:
     - name: ssh deploy on aws ec2
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST_DNS }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.EC2_SSH_KEY }}
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USERNAME }}
+        key: ${{ secrets.DEPLOY_KEY }}
         script: |
           cd ~/home/ubuntu/noDocker
           yarn install
