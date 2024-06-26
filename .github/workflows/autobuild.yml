@@ -24,3 +24,5 @@ jobs:
         REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
         SOURCE: "build/"
         TARGET: ${{ secrets.DEPLOY_TARGET }}
+      with:
+        args: -v
